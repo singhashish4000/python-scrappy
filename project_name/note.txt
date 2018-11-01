@@ -1,0 +1,10 @@
+scrapy startproject ourfirstscraper
+
+Creating a spider
+scrapy genspider redditbot www.reddit.com/r/gameofthrones/
+
+Run the spider with the following command:
+scrapy crawl redditbot
+
+
+scrapy genspider Quotes http://quotes.toscrape.com/page/1/
