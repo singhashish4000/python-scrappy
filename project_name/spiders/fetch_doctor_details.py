@@ -7,8 +7,8 @@ class FetchDoctorDetailsSpider(scrapy.Spider):
 
 
     def start_requests(self):
-'''        location_urls=[]
-        with open('urls.csv') as csv_file:
+        names_urls=[]
+        with open('doctor_names.csv') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
@@ -16,32 +16,30 @@ class FetchDoctorDetailsSpider(scrapy.Spider):
                     line_count += 1
                 else:
                     url = row[0]
-                    location_urls.append(url)
+                    names_urls.append(url)
                
                     line_count += 1
-'''                    
-        urls = [
-            'https://www.credihealth.com/doctor/jn-tandon-pediatrician/overview'
-        ]
-        for url in urls:
+        # i=0;
+        # for url in names_urls:
+        #     print(names_urls[i])
+        #     yield scrapy.Request(url=names_urls[i], callback=self.parse(places[i]))
+        #     i=i+1
+
+        for url in names_urls:
             yield scrapy.Request(url=url, callback=self.parse)
-
+        
     def parse(self, response):
-        page = response.url.split("/")[-2]
         # data=response.css("div.border-hover a::attr(href)").extract()
-        location =  response.css("div.doc-list a::attr(href)").extract()
-       
-        i=0;
-        for value in location:
-            print(location[i])
-            location[i]='https://www.credihealth.com'+location[i]
-            i=i+1
-            # data[key]='https://www.credihealth.com/'.item
+        name =  response.css("div.col-sm-8 h1.doctor_name::text".strip()).extract()
+        qualification =  response.css("div.col-sm-8 p::text".strip()).extract()
 
+        
+    
 
-       
-
-        for url in location:
-            yield {
-                'Url': url
-            }
+        yield {
+            'Name': response.css("div.col-sm-8 h1.doctor_name::text".strip()).extract(),
+            'Qualification': response.css("div.col-sm-8 p::text".strip()).extract(),
+            'Fee' :  response.css("div.col-sm-8 div.margin-t10 p.fee::text".strip()).extract(),
+            'Rating' : response.css("div.col-sm-8 i.fa.fa-thumbs-up::text".strip()).extract(),
+            'Place'  : response.css("div.bg-white.padding-20.box-shadow h3.doctor_heading a::text".split(",")[0]).extract()
+        }
