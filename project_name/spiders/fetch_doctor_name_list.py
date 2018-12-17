@@ -22,7 +22,7 @@ class FetchDoctorNamesSpider(scrapy.Spider):
         urls = [
             'https://www.credihealth.com/doctors/agra'
         ]
-        for url in location_urls:
+        for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
