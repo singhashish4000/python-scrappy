@@ -20,7 +20,7 @@ class FetchDoctorNamesSpider(scrapy.Spider):
                
         #             line_count += 1
         urls = [
-            'https://www.credihealth.com/doctors/thane'
+            'https://www.credihealth.com/doctors/mumbai'
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
